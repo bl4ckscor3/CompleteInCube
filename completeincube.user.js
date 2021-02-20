@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Complete In Cube
 // @namespace    bl4ckscor3
-// @version      1.0
+// @version      1.0.1
 // @description  Eyewire script to make the standard "c+c" shortcut for completing a cube available while inspecting a cube
 // @author       bl4ckscor3
 // @match        https://eyewire.org/
@@ -35,7 +35,7 @@
             if(e.key == 'C' || e.key == 'c') {
                 //ignore if the user is currently not inspecting a cube
                 //ignore if the user is currently typing into chat
-                if(tomni.task && !tomni.task.inspect && !document.getElementById("chatContainer").children[0].classList.contains("active")) {
+                if(tomni.task && tomni.task.inspect && !document.getElementById("chatContainer").children[0].classList.contains("active")) {
                     if(pressedC) { //second time pressing c
                         $.post(`1.0/task/${tomni.task.id}`, {action: "complete"}, "json"); //complete the cube
                         tomni.leave(); //return to overview
