@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Complete In Cube
 // @namespace    bl4ckscor3
-// @version      1.2
+// @version      1.2.1
 // @description  Eyewire script to make cube information as well as some shortcuts from the inspect panel available while inspecting a cube
 // @author       bl4ckscor3
 // @match        https://eyewire.org/
@@ -111,20 +111,30 @@
                 if(mutation) {
                     if(mutation.addedNodes.length !== 0 && mutation.addedNodes[0]) {
                         if(mutation.addedNodes[0].textContent.includes("←")) { //the arrow shows up when inspecting a cube
-                            let cubeInfo = document.querySelector("#cubeInspectorFloatingControls > .info > .panel.cube").cloneNode(true);
-                            let playerInfo = document.querySelector("#cubeInspectorFloatingControls > .info > .panel.player").cloneNode(true);
+                            if(tomni.task && tomni.task.inspect) {
+                                $("#inCubeInfoCube").remove();
+                                $("#inCubeInfoPlayer").remove();
 
-                            cubeInfo.id = "inCubeInfoCube";
-                            playerInfo.id = "inCubeInfoPlayer";
-                            setInfoStyle(cubeInfo);
-                            setInfoStyle(playerInfo);
-                            fixTextSelection(0, playerInfo);
-                            $("#inCubeInfoButton").after(playerInfo).after(cubeInfo);
-                            $("#inCubeInfoCube").children().each(fixTextSelection); //fix text not being selectable
-                            $("#inCubeInfoCube > .cubeid").remove(); //the cube id is already shown in the text above this info
-                            $("#inCubeInfoButton").show();
+                                let cubeInfo = document.querySelector("#cubeInspectorFloatingControls > .info > .panel.cube").cloneNode(true);
+                                let playerInfo = document.querySelector("#cubeInspectorFloatingControls > .info > .panel.player").cloneNode(true);
 
-                            if(!showInfo) {
+                                cubeInfo.id = "inCubeInfoCube";
+                                playerInfo.id = "inCubeInfoPlayer";
+                                setInfoStyle(cubeInfo);
+                                setInfoStyle(playerInfo);
+                                fixTextSelection(0, playerInfo);
+                                $("#inCubeInfoButton").after(playerInfo).after(cubeInfo);
+                                $("#inCubeInfoCube").children().each(fixTextSelection); //fix text not being selectable
+                                $("#inCubeInfoCube > .cubeid").remove(); //the cube id is already shown in the text above this info
+                                $("#inCubeInfoButton").show();
+
+                                if(!showInfo) {
+                                    $("#inCubeInfoCube").hide();
+                                    $("#inCubeInfoPlayer").hide();
+                                }
+                            }
+                            else if(!(tomni.task && tomni.task.inspect)) {
+                                $("#inCubeInfoButton").hide();
                                 $("#inCubeInfoCube").hide();
                                 $("#inCubeInfoPlayer").hide();
                             }
